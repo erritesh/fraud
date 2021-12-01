@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>New User Application Form</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="style/style.css">
+  </head>
+  <body>
+    <div class="testbox">
+    <form name="registration" method="post" action="process.php">
+    <div class="banner">
+        <h1>New User Application Form</h1>
+      </div>
+      <p>Please fill out the information that is requested below and submit the application form. Thank you!</p>
+      <hr/>
+      
+        
+      <fieldset>
+      <legend>Applicant Information</legend>
+
+      <div class="item">
+        <label for="name">Date time<span>*</span></label>
+        <div class="name-item">
+
+            <input type="text" id="currentDateTime" name="currentDateTime" disabled>
+          </div>
+          </div>
+      <script>
+        var today = new Date();
+      var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+      var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      var dateTime = date+' '+time;
+        document.getElementById("currentDateTime").value = dateTime;
+      </script>
+
+      <div class="item">
+      <label for="name">Full Name<span>*</span></label>
+      <div class="name-item">
+      <input  type="text" name="full_name" placeholder="Full Name" required/>
+      
+      </div>
+      </div>
+
+      <div class="item">
+        <label for="email">Email<span>*</span></label>
+        <div class="name-item">
+        <input type="text" name="email" placeholder="Email ID"/>
+      </div>
+    </div>
+
+      <div class="item">
+        <label for="mobile_no">Mobile Number<span>*</span></label>
+        <div class="name-item">
+        <input  type="numerics" name="mobile_no" required/>
+    </div>
+  </div>
+
+    <div class="item">
+      <label for="ssn">Social Security Number<span>*</span></label>
+      <div class="name-item">
+      <input  type="text" name="ssn" required/>
+    </div>
+  </div>
+
+    <label>Applicant Mailing Address</label>
+   
+    <div class="item">
+      <label for="position">Mailing Address<span>*</span></label>
+      <input type="text" name="app_address" placeholder="Mailing Address" required />
+      </div>
+      
+  </br>
+  <!--Landlord Address -->
+  <label>Landlord Address Details</label>
+  <fieldset>
+    <div class="item">
+      <label for="landlord_name">Landlord Name<span>*</span></label>
+      <div class="name-item">
+      <input  type="text" name="landlord_name" placeholder="Landlord Name" required/>
+    </div>
+  </div>
+
+
+    <div class="item">
+      <label for="position">Landlord Mailing Address<span>*</span></label>
+      <input type="text" name="landlord_address" placeholder="Landlord Mailing Address" required />
+    </div>
+          </fieldset>
+  <!--Landlord Address end -->
+        </br>
+ 
+    <div class="item">
+    <select name="renter">
+      <option selected value="" disabled selected>Renters</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+  
+    </select>
+  </div>  
+  <div class="item">
+    <select name="unit_type">
+      <option selected value="" disabled selected>Unit Type</option>
+      <option value="Single-Family">Single-Family</option>
+      <option value="Multi-Family">Multi-Family</option>
+    </select>
+  </div>
+    <div class="item">
+  <label for="requested_amount">Requested Amount<span>*</span></label>
+  <div class="name-item">
+  <input  type="text" name="requested_amount" placeholder="Requested Amount" required/>
+    </div>
+  </div>
+  </fieldset>
+
+      </br>
+			  </br>
+    
+     
+      <div class="btn-block">
+      <button type="submit" name="submit" value="submit">APPLY</button>
+      </div>
+      
+    </form>
+    </div>
+  </body>
+</html>
+
+  
