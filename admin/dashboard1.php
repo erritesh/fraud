@@ -3,17 +3,17 @@ include('includes/header.php');
 include('includes/topbar.php');
 include('includes/sidebar.php');
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<style>
-.table {
-    margin: 0 auto;
-    width: 100%;
-}
 
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dashboard </title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" >
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
 .bg-info {
-    background-color: #ff9333 !important;
+background-color: #ff9333 !important;
 }
 progress {
   border: none;
@@ -37,10 +37,31 @@ progress::-moz-progress-bar {
 </style>
 
 </head>
-<body>
 
-<!-- Main content -->
-<section class="content">
+<body>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+
+
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <section class="content">
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
@@ -94,8 +115,6 @@ progress::-moz-progress-bar {
             </div>
             </div>
           </div>
-          
-          
           <div class="col-lg-3 col-2">
             <!-- small box -->
             <div class="small-box bg-danger">
@@ -193,14 +212,7 @@ if ($result->num_rows > 0) {
                 </h3>
                 
                 </div>
-                <div>
-                <section>
-                <div>
-
-
-
-
- 
+              
 <?php
 $conn = new mysqli("localhost", "root", "", "ml_fraud_detection");
  
@@ -291,10 +303,11 @@ $result = $db->query("SELECT applicant_name,requested_amount FROM applicant_deta
 
 <div id="piechart" style="width: 900px; height: 500px;"></div>
 
+    </section>
+    </div>
 
 <?php
 include('includes/footer.php');
 ?>
 </body>
-</html
-
+</html>

@@ -5,6 +5,6 @@ $password='';
 $dbname = "ml_fraud_detection";
 $conn=mysqli_connect($servername,$username,$password,"$dbname");
 if(!$conn){
-   die('Could not Connect My Sql:' .mysql_error());
+   die('Could not Connect My Sql:' .mysqli_error());
 }
 ?>

@@ -61,7 +61,7 @@ if ($result->num_rows > 0) {
     <br>
 
       <legend>Applicant Information</legend>
-    <table border="1" id="userTable">
+    <table id="userTable">
         <thead>
             <th>Applicant ID</th>
             <th>Start Time</th>
@@ -95,7 +95,7 @@ if ($result->num_rows > 0) {
                         <td><?php echo $user['renter']; ?></td>
                         <td><?php echo $user['unit_type']; ?></td>
                         <td><?php echo $user['requested_amount']; ?></td>
-                        <td><a href="edit_applicent_data.php?id=<?php echo $user['id']; ?>">Edit</a></td>
+                        <td><a href="edit_applicent_data.php?id=<?php echo $user['id']; ?>">Analyze</a></td>
                         
                     </tr>
                 <?php } ?>

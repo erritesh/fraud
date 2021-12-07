@@ -1,7 +1,7 @@
 <?php
 include('includes/header.php');
 include('includes/topbar.php');
-include('includes/sidebar.php');
+//include('includes/sidebar.php');
 ?>
 
 <?php
@@ -30,9 +30,9 @@ if(isset($_POST['update'])) // when click on Update button
     $renter = $_POST['renter'];
     $unit_type = $_POST['unit_type'];
     $requested_amount = $_POST['requested_amount'];
-    $classification = $_POST['classification'];
+    //$classification = $_POST['classification'];
 
-$edit = mysqli_query($db,"update applicant_details set applicant_name ='$applicant_name', app_email='$app_email', app_onphone='$app_onphone',app_ssn='$app_ssn', app_mailing ='$app_mailing', landlord_name='$landlord_name',landlord_address='$landlord_address',renter='$renter', unit_type='$unit_type', requested_amount='$requested_amount', classification='$classification' where app_id='$app_id'");
+$edit = mysqli_query($db,"UPDATE applicant_details SET applicant_name ='$applicant_name', app_email='$app_email', app_onphone='$app_onphone',app_ssn='$app_ssn', app_mailing ='$app_mailing', landlord_name='$landlord_name',landlord_address='$landlord_address',renter='$renter', unit_type='$unit_type', requested_amount='$requested_amount' WHERE id='$id'");
 
 
     if($edit)
@@ -45,7 +45,7 @@ $edit = mysqli_query($db,"update applicant_details set applicant_name ='$applica
     
     else
     {
-        echo mysqli_error();
+        echo mysqli_error($db);
     }    	
 }
 ?>
@@ -134,31 +134,12 @@ $edit = mysqli_query($db,"update applicant_details set applicant_name ='$applica
 <td><input type="text" name="requested_amount" class="form-control" value="<?php echo $data['requested_amount']; ?>"> </td>
 </tr>
 <tr>
+
+<tr> 
 <td> <label>Classification</label></td>
-<td> 
-
-<select>
-<?php
-
-$db = mysqli_connect("localhost","root","","ml_fraud_detection");
-
-if(!$db)
-{
-    die("Connection failed: " . mysqli_connect_error());
-}
-
-
-
-$records = mysqli_query($db, "SELECT classification From applicant_details");  // Use select query here 
-
-        while($data = mysqli_fetch_array($records))
-        {
-            echo "<option value='". $data['classification'] ."'>" .$data['classification'] ."</option>";  // displaying data in option menu
-        }	
-    ?>  
-</select>
-<?php mysqli_close($db);  // close connection ?>
-
+<td><input type="text" name="classification" class="form-control" value="<?php echo $data['classification']; ?>"> </td>
+</tr>
+<tr>
 
 <tr>
 <td colspan="2">

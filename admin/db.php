@@ -7,6 +7,6 @@
    //$dbName = "demo";
     $dbCon = mysqli_connect($hName,$uName,$password,"$dbName");
       if(!$dbCon){
-          die('Could not Connect MySql Server:' .mysql_error());
+          die('Could not Connect MySql Server:' .mysqli_error($dbCon));
       }
 ?>

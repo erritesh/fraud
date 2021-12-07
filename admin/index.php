@@ -1,4 +1,7 @@
 <?php
+
+use function PHPSTORM_META\type;
+
 include('includes/header.php');
 include('includes/topbar.php');
 include('includes/sidebar.php');
@@ -15,31 +18,77 @@ include('includes/sidebar.php');
 .bg-info {
 background-color: #ff9333 !important;
 }
-progress {
-  border: none;
-  width: 100%;
-  height: 10px;
-  background:  #75716f;
-}
-
-progress {
-  color: #f9f6f4;
-}
-
-progress::-webkit-progress-value {
-  background: #f9f6f4;
-}
-
-progress::-moz-progress-bar {
-  background:  #f9f6f4;
-}
 .modal-content{
     width: 145%;
 }
 .table{
     width: 150%;
 }
+/*
+Progress bar css code
+*/
+.progress {
+	appearance: none;
+	display: block;
+	width: 100%;
+  color: #f9f6f4;
+	border: 0;
+  border-radius: 10px;
+  background-color: #f1f1f1;
+  margin-bottom: 1rem;
+  height: 1rem;
+}
+.progress-bar {
+  border-radius: 10px;
+}
+/*
+progress::-webkit-progress-bar {
+	background: lightgray;
+}
+progress::-webkit-progress-value {
+  background: #f9f6f4;
+	background: #06c;
+	transition: width 2.5s ease-in-out;
+}
+progress::-moz-progress-bar {
+  background:  #f9f6f4;
+}
 
+/*
+Progress bar css code
+*/
+progress {
+	appearance: none;
+	display: block;
+	width: 100%;
+  color: #f9f6f4;
+	height: 1rem;
+	border: 0;
+}
+progress::-webkit-progress-bar {
+	background: lightgray;
+}
+progress::-webkit-progress-value {
+  background: #f9f6f4;
+	background: #06c;
+	transition: width 2.5s ease-in-out;
+}
+progress::-moz-progress-bar {
+  background:  #f9f6f4;
+}
+/*
+Progress bar css code
+*/
+#myProgress {
+  width: 100%;
+  background-color: grey;
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: green;
+}
 </style>
 
 </head>
@@ -138,35 +187,72 @@ if(!$db)
     die("Connection failed: " . mysqli_connect_error());
 }
 $id = [];
-$start_time = [];
-$end_time = [];
+$start_time1 = [];
+$end_time1 = [];
 $applicant_name = [];
 $unit_type = [];
 $requested_amount = [];
+$comm_val= 0;
+$check_counter =0;
 
 
 $records = mysqli_query($db,"select * from applicant_details");
 while($data = mysqli_fetch_array($records))
 {
   $id [] = $data['id'];
-  $start_time [] = $data['app_start_time'];
-  $end_time[] = $data['app_submission_time'];
+  $start_time  = $data['app_start_time'];
+  $end_time = $data['app_submission_time'];
   $applicant_name = $data['applicant_name'];
   $unit_type = $data ['unit_type'];
   $requested_amount =$data ['requested_amount'];
+
+
+
+$now = new DateTime("$start_time");
+$ref = new DateTime("$end_time");
+$diff = $ref->getTimestamp() - $now->getTimestamp();
+
+if ($diff>30){
+  
+  $comm_val =$comm_val+0.70;
+} else {
+  $comm_val =$comm_val+1.0;
 }
-// for loop need to use
+$check_counter = $check_counter+1;
 
-print ($id[0]);
+if ($requested_amount>= 50000){
+  $comm_val =$comm_val+0.80;
+}
+else {
+  $comm_val =$comm_val+1.0;
+}
+$check_counter = $check_counter+1;
 
+  //$dupesql = "SELECT applicant_name FROM applicant_details GROUP BY applicant_name HAVING COUNT(*) > 1";
+  $dupesql ="SELECT COUNT(*) as total FROM applicant_details WHERE ( applicant_name = '$applicant_name' AND unit_type != 'Multi-Family')";
+
+  $duperaw = mysqli_query($db,$dupesql);
+  $data=mysqli_fetch_assoc($duperaw);
+
+$appcount= $data['total'];
+if ($appcount>1) {
+  
+  $comm_val =$comm_val+0.65;
+  
+
+} else {
+  $comm_val =$comm_val+1.0;
+}
+$check_counter = $check_counter+1;
+
+$final_val = $comm_val/$check_counter;
+}
 mysqli_close($db); 
 
 ?>
 
 
 <!-- End Code  -->
-
-
 
 <section class="content">
       <div class="container-fluid">
@@ -180,7 +266,7 @@ mysqli_close($db);
               <div class="inner">
                 <h3>53<sup style="font-size: 20px">%</sup></h3>
                 <div>
-                    <progress min="0" max="100" value="63" />
+                    <progress min="0" max="100" value="63"> </progress>
                 </div>
                 <p>Safe</p>
               </div>
@@ -196,7 +282,7 @@ mysqli_close($db);
               <div class="inner">
                 <h3>44</h3>
                 <div>
-                    <progress min="0" max="100" value="63" />
+                    <progress min="0" max="100" value="63" > </progress>
                 </div>
 
                 <p>Elevated Risk</p>
@@ -213,7 +299,7 @@ mysqli_close($db);
               <div class="inner">
                 <h3>150</h3>
                 <div>
-                    <progress min="0" max="100" value="63" />
+                    <progress min="0" max="100" value="63"> </progress>
                 </div>
                 <p>Medium Risk</p>
               </div>
@@ -228,7 +314,7 @@ mysqli_close($db);
               <div class="inner">
                 <h3>65</h3>
                 <div>
-                    <progress min="0" max="100" value="63" />
+                    <progress min="0" max="100" value="63"> </progress>
                 </div>
                 <p>High Risk</p>
               </div>
@@ -260,6 +346,69 @@ mysqli_close($db);
 </tr>
 </thead>
 <tbody>
+
+<script>
+  $(document).ready(function () {
+  const show_percent = true;
+  var progressBars = $(".progress-bar");
+  for (i = 0; i < progressBars.length; i++) {
+    var progress = $(progressBars[i]).attr("aria-valuenow");
+    $(progressBars[i]).width(progress + "%");
+    if (show_percent) {
+      $(progressBars[i]).text(progress + "%");
+    }
+    if (progress >= 1) {
+      //more than 1 and above
+      $(progressBars[i]).addClass("bg-success");
+    } 
+    else if (progress >= 0.250 && progress < 0.750) {
+      $(progressBars[i]).addClass("bg-warning"); //From 0.250 to 0.750
+    } 
+     else {
+      //.75 and above
+      $(progressBars[i]).addClass("bg-danger");
+    }
+  }
+});
+
+
+</script>
+
+
+
+<script>
+  /*
+var i = 0;
+function move(risk) {
+  var progressBar  = document.getElementById("myBar");
+  
+  if (risk >= 1.0) {
+    var width = 80;
+    progressBar.style.width =  width+ "%";
+    console.log (progressBar.style.width);
+    console.log("safe")
+
+} else if (risk<=0.250 && risk>0.0) {    
+  console.log("High");
+  var width = 80;
+  var color ="red"
+    progressBar.style.width =  width+ "%";
+    progressBar.style.color = color;
+    console.log (progressBar.style.width);
+
+} else if(risk>0.250 && risk<0.750){   
+  console.log("medium");
+  var width = 25;
+    progressBar.style.width =  width+ "%";
+    console.log (progressBar.style.width);
+} else {
+ console.log("No Risk");
+}
+ 
+} */
+</script>
+
+
 <?php
 include 'db.php';
 $query="select * from applicant_details limit 150"; 
@@ -273,12 +422,39 @@ $result=mysqli_query($dbCon,$query);
 <td><?php echo $array[3];?></td>
 <td><?php echo $array[6];?></td>
 <td><?php echo $array[13];?></td>
-<td><?php echo $array[14];?></td>
+<td><?php echo $array[14];?>
 
+
+<!--2`
+<div class="progress">
+  <div class="progress-bar" style="width:100%" aria-valuenow=<?php echo $array[14]; ?> max="1.0" min=0.0 ></div>
+</div> -->
+
+<progress value=<?php echo $array[14]; ?> max="1.0" min=0.0> </progress>
+
+
+
+
+  
+<!--
+<div id="myProgress">
+  <div id="myBar" >
+    <script>
+      move(<?php echo $array[14]; ?>);
+    </script>
+  </div>
+</div>
+-->
+
+</td>
 <td> 
 <a href="javascript:void(0)" class="btn btn-primary edit" data-id="<?php echo $array[0];?>">Edit</a>
 <a href="javascript:void(0)" class="btn btn-danger" data-id="<?php echo $array[0];?>">Delete</a>
 </tr>
+
+
+
+
 <?php endwhile; ?>
 <?php else: ?>
 <tr>
@@ -291,6 +467,7 @@ $result=mysqli_query($dbCon,$query);
 </div>
 </div>        
 </div>
+
 <!-- boostrap model -->
 <div class="modal fade" id="user-model" aria-hidden="true">
 <div class="modal-dialog">
@@ -413,13 +590,17 @@ $result=mysqli_query($dbCon,$query);
 <script type="text/javascript">
 $(document).ready(function($){
 $('#addNewUser').click(function () {
+
+
+
+  
 $('#userInserUpdateForm').trigger("reset");
 $('#userModel').html("Add New User");
 $('#user-model').modal('show');
 });
 $('body').on('click', '.edit', function () {
 var id = $(this).data('id');
-alert(id);
+//alert(id);
 // ajax
 $.ajax({
 type:"POST",
@@ -472,6 +653,8 @@ url: "insert-update.php",
 data: $(this).serialize(), // get all form field value in 
 dataType: 'json',
 success: function(res){
+  $('#app_start_time').val(date("Y-m-d H:i:s"));
+
 window.location.reload();
 }
 });
